@@ -1,0 +1,116 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Paleta y tipografía global
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1e40af;
+  --color-secondary: #f59e42;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-bg: #f9fafb;
+  --color-surface: #fff;
+  --color-text: #1e293b;
+  --border-radius: 0.75rem;
+  --spacing: 1rem;
+  --font-main: 'Inter', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.5px;
+}
+
+.card, .product-card {
+  background: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px #0001;
+  padding: var(--spacing);
+  margin-bottom: var(--spacing);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover, .product-card:hover, .card:focus-within, .product-card:focus-within {
+  box-shadow: 0 4px 16px #0002;
+}
+
+.button, button, .btn-primary, .btn-next, .btn-add-items {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75em 1.5em;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.button.secondary {
+  background: var(--color-secondary);
+  color: #fff;
+}
+
+.button:disabled, button:disabled, .btn-primary:disabled, .btn-next:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+input, select, textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: var(--border-radius);
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-family: inherit;
+  background: #fff;
+  color: var(--color-text);
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+::-webkit-input-placeholder { color: #94a3b8; }
+::-moz-placeholder { color: #94a3b8; }
+:-ms-input-placeholder { color: #94a3b8; }
+::placeholder { color: #94a3b8; }
+
+@media (max-width: 900px) {
+  .budget-wizard {
+    flex-direction: column;
+    .wizard-steps { width: 100%; padding: 1rem; }
+    .wizard-content { padding: 1rem; }
+  }
+}
+
+@media (max-width: 600px) {
+  .card, .product-card {
+    padding: 0.5rem;
+  }
+  .button, button, .btn-primary, .btn-next, .btn-add-items {
+    width: 100%;
+    padding: 1em;
+  }
+  h1, h2, h3 { font-size: 1.1rem; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px);}
+  to   { opacity: 1; transform: none;}
+}

@@ -1,0 +1,62 @@
+<div class="search-table-wrapper" tabindex="0" aria-label="Buscador de productos">
+  <!-- Barra de búsqueda -->
+  <form (submit)="onSearch(); $event.preventDefault()" style="margin-bottom:1rem; display:flex; gap:.5rem;">
+    <input type="text" [(ngModel)]="term" name="term" placeholder="🔍 Busca por nombre, SKU o descripción..." autofocus aria-label="Buscar producto" list="sugerencias"/>
+    <datalist id="sugerencias">
+      <option *ngFor="let p of results.slice(0,10)" [value]="p.sku + ' - ' + p.name"></option>
+    </datalist>
+    <button type="submit" [disabled]="loading" aria-label="Buscar">Buscar</button>
+    <!-- Filtros rápidos -->
+    <select [(ngModel)]="filterMarca" name="marca" (change)="onSearch()" aria-label="Filtrar por marca">
+      <option value="">Todas las marcas</option>
+      <option *ngFor="let m of marcas">{{m}}</option>
+    </select>
+    <input type="number" [(ngModel)]="filterPrecio" name="precio" (change)="onSearch()" placeholder="Precio máx." min="0" aria-label="Filtrar por precio máximo" style="width:7em"/>
+  </form>
+  <div *ngIf="loading" class="search-loading" aria-live="polite">Buscando productos...</div>
+  <div *ngIf="!loading && !term && results.length" class="search-hint">
+    Escribe para filtrar productos o explora el catálogo completo.
+  </div>
+  <table class="search-table" aria-label="Resultados de productos">
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio de Venta</th>
+        <th>Marca</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of pagedResults" (click)="onSelect(p)" class="search-row" [class.selected]="p===selected" tabindex="0"
+          [attr.aria-label]="'Seleccionar producto ' + p.name"
+          [attr.title]="p.description">
+        <td>{{ p.sku }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.description }}</td>
+        <td>{{ p.price | currency:'CLP' }}</td>
+        <td>{{ p.brand }}</td>
+      </tr>
+      <tr *ngIf="!results.length && !loading">
+        <td colspan="5" class="empty">
+          No se encontraron productos.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="search-table-footer">
+    <div class="per-page">
+      Items por página:
+      <select [(ngModel)]="pageSize" aria-label="Items por página">
+        <option *ngFor="let n of [5,10,20]">{{ n }}</option>
+      </select>
+    </div>
+    <div class="pagination">
+      {{ (page * pageSize) + 1 }} –
+      {{ Math.min((page+1)*pageSize, results.length) }}  
+      de {{ results.length }}
+      <button (click)="prev()" [disabled]="page===0" aria-label="Página anterior">‹</button>
+      <button (click)="next()" [disabled]="(page+1)*pageSize>=results.length" aria-label="Página siguiente">›</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.btn-add-conjunto {
+  background: #007bff; color: #fff;
+  padding: 0.75rem 1.5rem; border-radius: 4px;
+  border: none; cursor: pointer;
+  transition: background .2s;
+
+  &:hover { background: darken(#007bff,10%); }
+}

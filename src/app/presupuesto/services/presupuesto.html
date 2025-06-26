@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>SKU</th><th>Nombre</th><th>Precio</th>
+      <th>Cant.</th><th>% Desc.</th><th>Neto</th><th>IVA</th><th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let it of items">
+      <td>{{it.product.sku}}</td>
+      <td>{{it.product.name}}</td>
+      <td>{{it.product.price | currency:'CLP'}}</td>
+      <td>
+        <input type="number" min="1" [(ngModel)]="it.quantity"
+               (ngModelChange)="onQtyChange()"/>
+      </td>
+      <td>
+        <input type="number" min="0" max="100" [(ngModel)]="it.discount"
+               (ngModelChange)="onDiscountChange()"/>
+      </td>
+      <td>{{ neto(it) | number:'1.0-0' | currency:'CLP' }}</td>
+      <td>{{ iva(it) | number:'1.0-0' | currency:'CLP' }}</td>
+      <td>{{ total(it) | number:'1.0-0' | currency:'CLP' }}</td>
+    </tr>
+  </tbody>
+</table>

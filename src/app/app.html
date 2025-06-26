@@ -1,0 +1,195 @@
+<!-- Barra de progreso tipo wizard -->
+<nav class="wizard-progress" aria-label="Progreso del presupuesto">
+  <ol>
+    <li [class.active]="step===1" [attr.aria-current]="step===1 ? 'step' : null">1. Adjuntos</li>
+    <li [class.active]="step===2" [attr.aria-current]="step===2 ? 'step' : null">2. Productos</li>
+    <li [class.active]="step===3" [attr.aria-current]="step===3 ? 'step' : null">3. Resumen</li>
+  </ol>
+</nav>
+
+<main class="budget-wizard" aria-label="Flujo de presupuesto">
+<aside class="wizard-steps" aria-label="Resumen y acciones">
+  <h2>Resumen del presupuesto</h2>
+  <ul class="summary-list">
+    <li><strong>Items:</strong> {{ presu.conjuntos.length }}</li>
+    <li><strong>Productos:</strong> {{ totalProductos }}</li>
+  </ul>
+  <div class="totals-summary" aria-live="polite">
+    <div><strong>Neto:</strong> {{ totalNeto | currency:'CLP ' }}</div>
+    <div><strong>IVA:</strong> {{ totalIva | currency:'CLP ' }}</div>
+    <div><strong>Total:</strong> {{ totalGeneral | currency:'CLP ' }}</div>
+    <button class="btn-secondary" (click)="vaciarPresupuesto()" [disabled]="!presu.conjuntos.length">
+      Limpiar Presupuesto
+    </button>
+    <button class="btn-primary" (click)="onGuardarPresupuesto()">
+      Guardar
+    </button>
+    <div *ngIf="presupuestoGuardado" class="alert-toast success" aria-live="polite">
+      ¡Presupuesto guardado exitosamente!
+    </div>
+    <div *ngIf="guardando" class="alert-toast saving" aria-live="polite">
+      <span class="spinner"></span> Guardando...
+    </div>
+  </div>
+</aside>
+
+  <section class="wizard-content" tabindex="0">
+    <!-- Paso 1 -->
+    <div *ngIf="step===1" class="step step-1 fade-in">
+      <h3>1. Adjunta, comenta y organiza tu presupuesto</h3>
+      <!-- Adjuntos y comentarios -->
+      <div class="adjuntos-box">
+        <label for="adjuntos" class="adjuntos-label">Adjunta imágenes:</label>
+        <input id="adjuntos" type="file" multiple accept="image/*"
+               (change)="onAdjuntosChange($event)" aria-label="Adjuntar imágenes"/>
+        <div class="adjuntos-preview" *ngIf="adjuntos?.length">
+          <img *ngFor="let img of adjuntosPreview" [src]="img" alt="Adjunto" />
+        </div>
+      </div>
+<div class="comentario-box" style="display: flex; align-items: flex-end; gap: 1rem;">
+  <div style="flex:1;">
+    <label for="comentario">Comentario:</label>
+    <textarea id="comentario" [(ngModel)]="comentario" maxlength="250"
+              aria-label="Comentario"></textarea>
+    <div class="char-count">{{comentario?.length || 0}} / 250</div>
+  </div>
+  <button type="button" class="btn-secondary" (click)="vaciarConjunto()" style="height:2.5em;">
+    Vaciar
+  </button>
+</div>
+      <app-add-conjunto (nuevoConjunto)="onNuevoConjunto()"></app-add-conjunto>
+      <nav class="conjuntos-list" aria-label="Lista de presupuestos">
+  <div *ngFor="let c of presu.conjuntos; let i = index"
+       style="display: flex; flex-direction: column; align-items: flex-start; margin-right: 2rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <button
+        [class.selected]="c.id===selectedId"
+        (click)="selectConjunto(c.id)"
+        [attr.aria-pressed]="c.id===selectedId"
+        [attr.aria-label]="'Seleccionar conjunto ' + (i+1)"
+        style="min-width: 140px;">
+        Item {{i + 1}}
+      </button>
+      <button class="btn-remove btn-x"
+              (click)="onRemoveConjunto(c.id)"
+              aria-label="Eliminar item"
+              title="Eliminar este item"
+              style="font-size: 1.2rem;">
+        &times;
+      </button>
+    </div>
+    <div *ngIf="c.productos?.length"
+         class="conjunto-productos-preview"
+         style="margin-left: 0.5rem; margin-top: 0.3rem; width: 100%;">
+      <div *ngFor="let p of c.productos"
+           style="font-size: 0.97rem; display: flex; align-items: center; gap: 0.7rem;">
+        <span>
+          {{p.product.name}} <b>x{{p.quantity}}</b>
+          <span style="color:#888;">{{p.product.price | currency:'CLP'}}</span>
+        </span>
+        <button class="btn-remove btn-trash"
+                (click)="onRemoveProductoFromConjunto(c.id, p.product.sku)"
+                aria-label="Eliminar producto">🗑️</button>
+      </div>
+    </div>
+  </div>
+</nav>
+      <button class="btn-next"
+              (click)="step=2"
+              [disabled]="!selectedId"
+              aria-label="Siguiente paso">
+        Siguiente →  
+      </button>
+    </div>
+
+    <!-- Paso 2: Agregar Productos -->
+    <div *ngIf="step === 2" class="step step-2 fade-in">
+      <h3>2. Agrega productos al conjunto</h3>
+      <ng-container *ngIf="!showSearch; else buscadorTpl">
+        <button class="btn-add-items" (click)="onAgregarItems()" aria-label="Agregar productos">
+          + Productos
+        </button>
+        <app-product-table
+          *ngIf="active?.productos?.length; else noItemsTpl"
+          [items]="active?.productos ?? []"
+          (removeItem)="onRemoveProducto($event)">
+        </app-product-table>
+        <ng-template #noItemsTpl>
+          <p class="empty" aria-live="polite">
+            No hay productos. Haz click en “+ Productos” para buscarlos.
+          </p>
+        </ng-template>
+      </ng-container>
+      <ng-template #buscadorTpl>
+        <button class="btn-back" (click)="onCancelarBusqueda()" aria-label="Volver a la tabla de productos">
+          ← Volver
+        </button>
+        <app-product-search
+          (select)="onProductSelected($event)">
+        </app-product-search>
+      </ng-template>
+      <div class="wizard-nav">
+        <button (click)="goBack()" aria-label="Anterior">← Anterior</button>
+        <button (click)="goNext()" [disabled]="!active?.productos?.length" aria-label="Siguiente paso">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+
+    <!-- Paso 3 -->
+    <div *ngIf="step===3" class="step step-3 fade-in">
+      <h3>3. Revisa y finaliza tu presupuesto</h3>
+      <div class="final-summary">
+        <table class="final-table" aria-label="Resumen del presupuesto">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Descuento</th>
+              <th>Neto</th>
+              <th>IVA</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let it of active?.productos || []">
+              <td>{{it.product.name}}</td>
+              <td>{{it.quantity}}</td>
+              <td>{{it.product.price | currency:'CLP'}}</td>
+              <td>{{it.discount}}%</td>
+              <td>{{(it.product.price * it.quantity * (1-it.discount/100)) | currency:'CLP':'symbol':'1.0-0'}}</td>
+              <td>{{(it.product.price * it.quantity * (1-it.discount/100) * 0.19) | currency:'CLP':'symbol':'1.0-0'}}</td>
+              <td>{{total(it) | currency:'CLP':'symbol':'1.0-0'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="totals-box">
+          <div><strong>Neto:</strong> {{ totalNeto | currency:'CLP' }}</div>
+          <div><strong>IVA (19%):</strong> {{ totalIva | currency:'CLP' }}</div>
+          <div class="total-final"><strong>Total:</strong> {{ totalGeneral | currency:'CLP' }}</div>
+        </div>
+      </div>
+      <div class="final-actions">
+        <button class="btn-secondary" (click)="goBack()">Volver</button>
+        <button class="btn-primary" (click)="onGuardarPresupuesto()" [disabled]="!active?.productos?.length">
+          Guardar {{ presu.conjuntos.length === 1 ? 'Conjunto' : 'Item' }}
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- caja modal centrada -->
+<div class="modal" *ngIf="modalOpen" role="dialog" aria-modal="true" aria-label="Buscar Productos">
+  <div class="modal-header">
+    <h2>Buscar Productos</h2>
+    <button class="btn-close" (click)="onCancelarBusqueda()" aria-label="Cerrar">×</button>
+  </div>
+  <section class="modal-body">
+    <app-product-search
+      (select)="onProductSelected($event)">
+    </app-product-search>
+  </section>
+</div>
+

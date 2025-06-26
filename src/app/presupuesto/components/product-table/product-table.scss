@@ -1,0 +1,115 @@
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 1rem;
+  outline: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th, td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  thead th {
+    border-bottom: 2px solid #ccc;
+    background: #f9f9f9;
+    font-weight: 600;
+    color: #222;
+  }
+  tbody tr:nth-child(even) {
+    background: #fbfbfb;
+  }
+  tbody tr:hover, tbody tr:focus-within {
+    background: #eef6ff;
+    transition: background 0.2s;
+  }
+  input {
+    width: 3rem;
+    padding: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+    &:focus { border-color: #2563eb; }
+  }
+  .input-error {
+    border-color: #ef4444 !important;
+    background: #fff0f0;
+  }
+  .btn-remove {
+    background: transparent;
+    border: none;
+    color: #c00;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    &:hover, &:focus { color: #900; outline: 2px solid #900; }
+  }
+  .empty {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+  }
+  tbody tr.ng-leave {
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  tbody tr.ng-leave-active {
+    opacity: 0;
+  }
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  button {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1.5px solid #2563eb;
+    background: #fff;
+    color: #2563eb;
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    &:disabled {
+      border-color: #ddd;
+      color: #bbb;
+      background: #f9f9f9;
+      cursor: not-allowed;
+    }
+  }
+  input {
+    width: 2.5rem;
+    height: 2.2rem;
+    text-align: center;
+    font-size: 1.1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 0 0.25rem;
+    background: #fff;
+  }
+}
+.table-total {
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+@media (max-width: 600px) {
+  th, td { padding: 0.5rem 0.25rem; font-size: 0.95rem; }
+  input { width: 2.5rem; }
+}

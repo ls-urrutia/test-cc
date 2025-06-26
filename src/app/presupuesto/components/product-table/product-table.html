@@ -1,0 +1,66 @@
+<div class="table-wrapper" tabindex="0" aria-label="Tabla de productos">
+  <table>
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cant.</th>
+        <th>% Desc.</th>
+        <th>Neto</th>
+        <th>IVA</th>
+        <th>Total</th>
+        <th>Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of items">
+        <td>{{ it.product.sku }}</td>
+        <td>{{ it.product.name }}</td>
+        <td>{{ it.product.price | currency:'CLP' }}</td>
+        <td>
+          <div class="qty-controls">
+            <button type="button" (click)="decrementQty(it)" aria-label="Disminuir cantidad" [disabled]="it.quantity<=1">−</button>
+            <input type="number" min="1"
+                   [(ngModel)]="it.quantity"
+                   (ngModelChange)="onQtyChange()"
+                   aria-label="Cantidad"
+                   [attr.aria-invalid]="it.quantity < 1"
+                   [ngClass]="{'input-error': it.quantity < 1}"
+                   title="Cantidad mínima 1"/>
+            <button type="button" (click)="incrementQty(it)" aria-label="Aumentar cantidad">+</button>
+          </div>
+        </td>
+        <td>
+          <input type="number" min="0" max="100"
+                 [(ngModel)]="it.discount"
+                 (ngModelChange)="onDiscountChange()"
+                 aria-label="Descuento"
+                 [attr.aria-invalid]="it.discount < 0 || it.discount > 100"
+                 [ngClass]="{'input-error': it.discount < 0 || it.discount > 100}"
+                 title="Descuento entre 0 y 100%"/>
+        </td>
+        <td>{{ neto(it)   | currency:'CLP':'symbol':'1.0-0' }}</td>
+        <td>{{ iva(it)    | currency:'CLP':'symbol':'1.0-0' }}</td>
+        <td>{{ total(it)  | currency:'CLP':'symbol':'1.0-0' }}</td>
+        <td class="cell-delete">
+          <button class="btn-remove"
+                  (click)="onRemove(it.product.sku)"
+                  attr.aria-label="Eliminar {{it.product.name}}"
+                  title="Eliminar este producto">
+            🗑️
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="items.length===0">
+        <td colspan="9" class="empty">
+          No hay productos en este conjunto.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-total" *ngIf="items.length">
+    <strong>Total general: </strong>
+    {{ totalGeneral | currency:'CLP':'symbol':'1.0-0' }}
+  </div>
+</div>
