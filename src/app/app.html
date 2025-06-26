@@ -51,7 +51,7 @@
         <textarea id="comentario" [(ngModel)]="comentario" maxlength="250"
                   aria-label="Comentario"></textarea>
         <div class="comentario-actions">
-          <span class="char-count">{{comentario?.length || 0}} / 250</span>
+          <span class="char-count">{{comentario.length || 0}} / 250</span>
           <button type="button" class="btn-secondary" (click)="vaciarConjunto()">Vaciar</button>
         </div>
       </div>

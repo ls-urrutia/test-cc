@@ -599,3 +599,15 @@ $border: #ddd;
 .btn-danger:hover {
   background: #b71c1c;
 }
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover { background: adjust-color(#007bff, $lightness: -10%); }
+}
