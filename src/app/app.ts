@@ -33,9 +33,9 @@ import { InMemoryDataService }     from './in-memory-data';
 })
 
 export class AppComponent {
-  // ① Declaras aquí las variables faltantes
-  step = 1;           // controla en qué paso estás
-  modalOpen = false;  // si usas modal en paso 2
+
+  step = 1;         
+  modalOpen = false; 
 
   selectedId: string|null = null;
   showSearch = false;
@@ -111,7 +111,7 @@ export class AppComponent {
       this.presupuestoGuardado = true;
       setTimeout(() => {
         this.presupuestoGuardado = false;
-        this.step = 1; // ← Volver a la pantalla principal/resumen si quieres
+        this.step = 1;
       }, 1200);
     }, 1000); // Simula 1 segundo de guardado
   }
@@ -151,7 +151,7 @@ vaciarPresupuesto() {
   }
 
   get totalNeto() {
-    // Suma los productos de todos los conjuntos
+
     return this.presu.conjuntos.reduce((total, c) =>
       total + c.productos.reduce((s, x) =>
         s + x.product.price * x.quantity * (1 - x.discount / 100), 0
