@@ -357,7 +357,13 @@ $border: #ddd;
 .adjuntos-box {
   margin-bottom: 1rem;
   .adjuntos-label { font-weight: 600; }
-  input[type="file"] { margin-top: 0.5rem; }
+  input[type="file"] {
+    margin-top: 0.5rem;
+    max-width: 350px;
+    width: 100%;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
   .adjuntos-preview {
     display: flex; gap: 0.5rem; margin-top: 0.5rem;
     img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
@@ -368,9 +374,21 @@ $border: #ddd;
   textarea {
     width: 100%; min-height: 60px; border-radius: 6px; border: 1px solid #ddd; padding: 0.5rem;
     font-size: 1rem;
+    margin-bottom: 0.25rem;
   }
-  .char-count {
-    text-align: right; font-size: 0.9rem; color: #888;
+  .comentario-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+    .char-count {
+      font-size: 0.9rem; color: #888;
+    }
+    .btn-secondary {
+      height: 2.5em;
+      margin-left: 1rem;
+      margin-right: 0;
+    }
   }
 }
 .conjunto-productos-preview {
@@ -566,4 +584,18 @@ $border: #ddd;
   color: #e11d48 !important;
   opacity: 1;
   background: none !important;
+}
+
+.btn-danger {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.5em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-danger:hover {
+  background: #b71c1c;
 }

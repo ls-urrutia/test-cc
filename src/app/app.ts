@@ -47,6 +47,8 @@ export class AppComponent {
 
   guardando = false;
 
+  confirmarVaciar = false;
+
   constructor(public presu: PresupuestoService) {}
 
   onNuevoConjunto() {
@@ -133,6 +135,12 @@ vaciarPresupuesto() {
   this.adjuntos = [];
   this.adjuntosPreview = [];
 }
+
+  confirmarVaciarPresupuesto() {
+    if (window.confirm('¿Estás seguro que deseas limpiar todo el presupuesto? Esta acción no se puede deshacer.')) {
+      this.vaciarPresupuesto();
+    }
+  }
 
   goNext() {
     if (this.step < 3) this.step++;

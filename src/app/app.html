@@ -18,7 +18,7 @@
     <div><strong>Neto:</strong> {{ totalNeto | currency:'CLP ' }}</div>
     <div><strong>IVA:</strong> {{ totalIva | currency:'CLP ' }}</div>
     <div><strong>Total:</strong> {{ totalGeneral | currency:'CLP ' }}</div>
-    <button class="btn-secondary" (click)="vaciarPresupuesto()" [disabled]="!presu.conjuntos.length">
+    <button class="btn-secondary" (click)="confirmarVaciar = true" [disabled]="!presu.conjuntos.length">
       Limpiar Presupuesto
     </button>
     <button class="btn-primary" (click)="onGuardarPresupuesto()">
@@ -46,17 +46,15 @@
           <img *ngFor="let img of adjuntosPreview" [src]="img" alt="Adjunto" />
         </div>
       </div>
-<div class="comentario-box" style="display: flex; align-items: flex-end; gap: 1rem;">
-  <div style="flex:1;">
-    <label for="comentario">Comentario:</label>
-    <textarea id="comentario" [(ngModel)]="comentario" maxlength="250"
-              aria-label="Comentario"></textarea>
-    <div class="char-count">{{comentario?.length || 0}} / 250</div>
-  </div>
-  <button type="button" class="btn-secondary" (click)="vaciarConjunto()" style="height:2.5em;">
-    Vaciar
-  </button>
-</div>
+      <div class="comentario-box">
+        <label for="comentario">Comentario:</label>
+        <textarea id="comentario" [(ngModel)]="comentario" maxlength="250"
+                  aria-label="Comentario"></textarea>
+        <div class="comentario-actions">
+          <span class="char-count">{{comentario?.length || 0}} / 250</span>
+          <button type="button" class="btn-secondary" (click)="vaciarConjunto()">Vaciar</button>
+        </div>
+      </div>
       <app-add-conjunto (nuevoConjunto)="onNuevoConjunto()"></app-add-conjunto>
       <nav class="conjuntos-list" aria-label="Lista de presupuestos">
   <div *ngFor="let c of presu.conjuntos; let i = index"
@@ -190,6 +188,21 @@
     <app-product-search
       (select)="onProductSelected($event)">
     </app-product-search>
+  </section>
+</div>
+
+<div class="modal-backdrop" *ngIf="confirmarVaciar"></div>
+<div class="modal" *ngIf="confirmarVaciar" role="dialog" aria-modal="true" aria-label="Confirmar limpieza">
+  <div class="modal-header">
+    <h2>¿Limpiar presupuesto?</h2>
+    <button class="btn-close" (click)="confirmarVaciar = false" aria-label="Cerrar">×</button>
+  </div>
+  <section class="modal-body">
+    <p>¿Estás seguro que deseas limpiar todo el presupuesto? Esta acción no se puede deshacer.</p>
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+      <button class="btn-secondary" (click)="confirmarVaciar = false">Cancelar</button>
+      <button class="btn-danger" (click)="vaciarPresupuesto(); confirmarVaciar = false;">Limpiar</button>
+    </div>
   </section>
 </div>
 

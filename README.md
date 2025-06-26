@@ -1,59 +1,87 @@
-# TestCc
+# Test Práctico Frontend CC
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+## Justificación de la Propuesta Visual y Funcional
 
-## Development server
+### Análisis y oportunidades de mejora
 
-To start a local development server, run:
+- El flujo original no mostraba claramente los pasos ni la jerarquía de información.
+- Acciones clave como agregar productos, crear nuevos items o guardar no estaban destacadas ni daban feedback inmediato.
+- Faltaba feedback visual al guardar y accesibilidad en controles.
 
-```bash
-ng serve
-```
+### Mejoras implementadas (Vista por vista)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+#### Paso 1: Adjuntos, Comentario y Organización de Items
 
-## Code scaffolding
+- **Barra de progreso tipo wizard:** El usuario ve claramente en qué paso está y cuántos faltan.
+- **Botón "Nuevo Item":** Permite crear uno o más conjuntos/servicios dentro del presupuesto.
+- **Lista de Items:** Cada item aparece en una lista editable, con controles para seleccionar, eliminar o vaciar.
+- **Adjuntos y comentario:** Se pueden adjuntar imágenes y agregar comentarios específicos para cada item.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+#### Paso 2: Agregar Productos al Item
 
-```bash
-ng generate component component-name
-```
+- **Selección de Item activo:** El usuario debe seleccionar un item antes de agregar productos.
+- **Botón "+ Productos":** Abre un modal de búsqueda para agregar productos de a uno al item seleccionado.
+- **Tabla de productos:** Muestra los productos agregados, con controles para eliminar o modificar cantidades.
+- **Feedback inmediato:** Mensajes claros si no hay productos y navegación guiada entre pasos.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+#### Paso 3: Resumen y Guardado
 
-```bash
-ng generate --help
-```
+- **Resumen detallado:** Tabla con todos los productos del item activo y totales destacados.
+- **Botón "Guardar":** Guarda el presupuesto completo, mostrando animación moderna (spinner y toast).
+- **Botón "Volver":** Permite regresar y editar antes de finalizar.
 
-## Building
+### Creatividad visual y SCSS
 
-To build the project run:
+- Uso de SCSS para estilos modernos, botones circulares y toasts animados.
+- Diseño limpio, jerárquico y consistente en toda la app.
 
-```bash
-ng build
-```
+### Funcionalidad Angular
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Implementación en Angular 20, usando componentes, bindings y eventos.
+- Botones de agregar productos, crear items y guardar completamente funcionales.
 
-## Running unit tests
+### Resumen de mejoras clave
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- **Claridad:** Wizard de pasos y agrupación lógica.
+- **Usabilidad:** Botones destacados, feedback inmediato, acciones claras.
+- **Eficiencia:** Menos clics, navegación guiada, acciones rápidas.
+- **Accesibilidad:** Etiquetas, ARIA, estados claros.
+- **Visual:** Diseño moderno, limpio y consistente.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+**Conclusión:**  
+La propuesta mejora la claridad, usabilidad y eficiencia del flujo de creación de presupuestos, aplicando buenas prácticas de UX/UI y desarrollo frontend moderno con Angular y SCSS. El feedback visual y los controles accesibles aseguran una experiencia satisfactoria y profesional.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## Parte 2 – Análisis Crítico
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Análisis de la imagen (ANEXO 1)
 
-## Additional Resources
+#### Errores visuales, de jerarquía o experiencia detectados
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Jerarquía visual poco clara:** El mensaje de notificación al dueño del vehículo se mezcla visualmente con los mensajes internos del chat.
+- **Distinción insuficiente entre tipos de mensajes:** Falta diferenciación visual (color, icono, fondo) para identificar rápidamente el origen y el tipo de mensaje.
+- **Botones de acción poco visibles:** Los botones para agregar imágenes, trabajos y eventos no destacan ni tienen etiquetas claras.
+- **Lista horizontal de usuarios/trabajos poco explicativa:** Faltan títulos, etiquetas o tooltips para orientar al usuario.
+- **Espaciado y agrupación:** Los mensajes están muy juntos y no hay suficiente separación entre conversaciones, notificaciones y acciones.
+- **Accesibilidad:** No se observan indicadores de foco o accesibilidad para usuarios con teclado o lectores de pantalla.
+
+### Funcionalidades o mejoras que implementaría
+
+- **Separación y estilos para tipos de mensajes:** Aplicaría estilos diferenciados para mensajes del sistema, notificaciones al cliente y mensajes internos.
+- **Encabezado claro para la lista de trabajos:** Agregaría un título o tooltip sobre la lista horizontal de trabajos.
+- **Mejorar la visibilidad de los botones de acción:** Botones más grandes, con iconos claros y etiquetas de texto, agrupados en una barra de acciones fija y accesible.
+- **Separación visual y agrupación:** Más espacio entre mensajes y notificaciones, usando líneas divisorias o agrupadores.
+- **Feedback y estados:** Indicadores de entrega/lectura de mensajes, estados de conexión y feedback visual al enviar archivos o eventos.
+- **Accesibilidad:** Mejor soporte para navegación por teclado, etiquetas ARIA y contraste suficiente.
+
+---
+
+**En resumen:**  
+La interfaz puede mejorar mucho en claridad, jerarquía visual y usabilidad diferenciando tipos de mensajes, haciendo más visibles las acciones principales y guiando mejor al usuario sobre el contexto y las funcionalidades disponibles.
+
+---
+
+_Las capturas de pantalla se incluyen a continuación para ilustrar cada vista y mejora propuesta._
